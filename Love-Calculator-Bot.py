@@ -9,6 +9,8 @@ bot = Client("Love Calculator Bot",api_id=21832338,
 
 
 
+# Channel_ID
+Log_Channel = -1002084915865 
 
 
 # Functions 
@@ -67,7 +69,25 @@ def SentenceGenerator(male , female):
     
     return mes
 
+@bot.on_message(filters.command("start"))
+def Greetuser(bot,message):
+    text = f"""💌 Dear {message.from_user.mention(f"{message.from_user.first_name}")}, 
+Welcome to the Love Calculator Bot! Enter two names, and the bot will generate a love percentage between them. 💘 It's a fun way to gauge potential romantic connections.
 
+✨ Let's find out the love percentage between you and your special someone! ✨
+
+💑 Simply enter their names, and our magical algorithm will do the rest! 💫
+
+🔥 Get ready for an exciting journey of love, laughter, and surprises! 🎉
+
+💖 Discover your love compatibility and share the results with your friends! 🌟
+
+🌹 Love is in the air! Start exploring now and uncover your love percentage! 🌈
+
+😊 If you have any suggestions, feel free to reach out to us at @Fine_guy_21. 😊
+
+Happy matching! 😄"""
+    bot.send_message(message.chat.id,text )
 
 @bot.on_message(filters.command("match"))
 def MatchCommand (bot, message):
@@ -86,37 +106,71 @@ def MatchCommand (bot, message):
         sec = int(re.findall(r'\b(\d+)%', result2)[0])
         if fir > sec:
             message.reply(f"The result is : \n\t {result}💕 \n\t {result2}")
+            bot.send_message(Log_Channel,f"The result is : \n\t {result}💕 \n\t {result2}" + f"""\n Triggered by {message.from_user.mention(f"{message.from_user.first_name}")}""")
+
         elif sec > fir:
             message.reply(f"The result is : \n\t {result} \n\t {result2}💕")
+            bot.send_message(Log_Channel,f"The result is : \n\t {result} \n\t {result2}💕" + f"""\n Triggered by {message.from_user.mention(f"{message.from_user.first_name}")}""")
+
         else:
             message.reply(f"The result is : \n\t {result}💕 \n\t {result2}💕")
+            bot.send_message(Log_Channel,f"The result is : \n\t {result}💕 \n\t {result2}💕" + f"""\n Triggered by {message.from_user.mention(f"{message.from_user.first_name}")}""")
+            
 
     except:
         message.reply("Sorry, the name couldn't be found. Please refer to the /help command for instructions on how to use this command.")
 
 @bot.on_message(filters.group & filters.command("love"))
 def LoveCommand (bot,message):
-    print("love")
+    print('hello')
+    if message.reply_to_message:
+        print("yes")
+        try:
+            name = message.reply_to_message.from_user.first_name
+            myname = message.from_user.first_name
+            result = SentenceGenerator(name,myname)
+            result2 = SentenceGenerator(myname,name)
+            mes = message.reply("🔄 Gathering Names from the input . . .")
+            time.sleep(2)
+            bot.edit_message_text(message.chat.id,mes.id, "Calculating Love 💌 . . .")
+            time.sleep(5)
+            bot.delete_messages(message.chat.id,mes.id)
+            fir = int(re.findall(r'\b(\d+)%', result)[0]) 
+            sec = int(re.findall(r'\b(\d+)%', result2)[0])
+            if fir > sec:
+                message.reply(f"The result is : \n\t {result}💕 \n\t {result2}")
+                bot.send_message(Log_Channel,f"The result is : \n\t {result}💕 \n\t {result2}" + f"""\n Triggered by {message.from_user.mention(f"{message.from_user.first_name}")}""")
 
+            elif sec > fir:
+                message.reply(f"The result is : \n\t {result} \n\t {result2}💕")
+                bot.send_message(Log_Channel,f"The result is : \n\t {result} \n\t {result2}💕" + f"""\n Triggered by {message.from_user.mention(f"{message.from_user.first_name}")}""")
+
+            else:
+                message.reply(f"The result is : \n\t {result}💕 \n\t {result2}💕")
+                bot.send_message(Log_Channel,f"The result is : \n\t {result}💕 \n\t {result2}💕" + f"""\n Triggered by {message.from_user.mention(f"{message.from_user.first_name}")}""")
+
+        except:
+            message.reply("Apologies, the name couldn't be found. Please ensure that both you and the user have provided a first name.")   
+    else:
+        message.reply("reply to a user that you want")
 
 @bot.on_message(filters.command("help"))
-def MatchCommand (bot, message):
-    text = f"""Dear {message.from_user.first_name}, Welcome to <b><u>Love Calculator Bot!</u></b> 🌟  \nCalculate your love percentage with your loved ones using our bot 💑💖
-\n\nCommand: `/love` <i> just reply to a user in a group </i> 💌💬
-\nCommand: `/match First Second` 💞
-\n
+def HelpCommand(bot, message):
+
+    text = f"""Dear {message.from_user.mention(f"{message.from_user.first_name}")}, Welcome to <b><u>Love Calculator Bot!</u></b> 🌟\nCalculate your love percentage with your loved ones using our bot 💑💖
+
+Command: `/love` <i>(just reply to a user in a group)</i> 💌💬
+
+Command: `/match First Second` 💞
+
 The result will be displayed in the following format:
-`\tThe result is:
-\t\tFirst loves Second: 52%.
-\t\tSecond loves First: 61%.`
+    The result is:
+        First loves Second: 52%.
+        Second loves First: 61%. 💕
 
-
-
+We appreciate your support in using our bot and sharing it with others. Together, let's spread love and positivity in the world. If you have any suggestions or feedback, feel free to reach out to me(@Fine_Guy_21). Happy calculating and may love always be in your favor! ✨🌈💞
 """
     message.reply(text)
-
     
-
-
 print("Love Calculator Bot is working ")
 bot.run()
