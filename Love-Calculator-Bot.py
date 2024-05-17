@@ -9,8 +9,6 @@ bot = Client("Love Calculator Bot",api_id=21832338,
 
 
 
-# Channel_ID
-Log_Channel = -1002084915865 
 
 
 # Functions 
@@ -84,7 +82,7 @@ Welcome to the Love Calculator Bot! Enter two names, and the bot will generate a
 
 🌹 Love is in the air! Start exploring now and uncover your love percentage! 🌈
 
-😊 If you have any suggestions, feel free to reach out to us at @Fine_guy_21. 😊
+😊 If you have any suggestions, feel free to reach out to me at @Fine_guy_21. 😊
 
 Happy matching! 😄"""
     bot.send_message(message.chat.id,text )
@@ -104,27 +102,14 @@ def MatchCommand (bot, message):
         bot.delete_messages(message.chat.id,mes.id)
         fir = int(re.findall(r'\b(\d+)%', result)[0]) 
         sec = int(re.findall(r'\b(\d+)%', result2)[0])
-        if fir > sec:
-            message.reply(f"The result is : \n\t {result}💕 \n\t {result2}")
-            bot.send_message(Log_Channel,f"The result is : \n\t {result}💕 \n\t {result2}" + f"""\n Triggered by {message.from_user.mention(f"{message.from_user.first_name}")}""")
-
-        elif sec > fir:
-            message.reply(f"The result is : \n\t {result} \n\t {result2}💕")
-            bot.send_message(Log_Channel,f"The result is : \n\t {result} \n\t {result2}💕" + f"""\n Triggered by {message.from_user.mention(f"{message.from_user.first_name}")}""")
-
-        else:
-            message.reply(f"The result is : \n\t {result}💕 \n\t {result2}💕")
-            bot.send_message(Log_Channel,f"The result is : \n\t {result}💕 \n\t {result2}💕" + f"""\n Triggered by {message.from_user.mention(f"{message.from_user.first_name}")}""")
             
 
     except:
         message.reply("Sorry, the name couldn't be found. Please refer to the /help command for instructions on how to use this command.")
 
 @bot.on_message(filters.group & filters.command("love"))
-def LoveCommand (bot,message):
-    print('hello')
+def LoveCommand (bot,message):    
     if message.reply_to_message:
-        print("yes")
         try:
             name = message.reply_to_message.from_user.first_name
             myname = message.from_user.first_name
@@ -137,18 +122,6 @@ def LoveCommand (bot,message):
             bot.delete_messages(message.chat.id,mes.id)
             fir = int(re.findall(r'\b(\d+)%', result)[0]) 
             sec = int(re.findall(r'\b(\d+)%', result2)[0])
-            if fir > sec:
-                message.reply(f"The result is : \n\t {result}💕 \n\t {result2}")
-                bot.send_message(Log_Channel,f"The result is : \n\t {result}💕 \n\t {result2}" + f"""\n Triggered by {message.from_user.mention(f"{message.from_user.first_name}")}""")
-
-            elif sec > fir:
-                message.reply(f"The result is : \n\t {result} \n\t {result2}💕")
-                bot.send_message(Log_Channel,f"The result is : \n\t {result} \n\t {result2}💕" + f"""\n Triggered by {message.from_user.mention(f"{message.from_user.first_name}")}""")
-
-            else:
-                message.reply(f"The result is : \n\t {result}💕 \n\t {result2}💕")
-                bot.send_message(Log_Channel,f"The result is : \n\t {result}💕 \n\t {result2}💕" + f"""\n Triggered by {message.from_user.mention(f"{message.from_user.first_name}")}""")
-
         except:
             message.reply("Apologies, the name couldn't be found. Please ensure that both you and the user have provided a first name.")   
     else:
